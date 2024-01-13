@@ -78,41 +78,47 @@ const firebaseConfig = {
           });
    
   }
-
-  // Only show snapshop when LoggedIn
+  const monitorAuthState = async () => {
+    await new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          snapShotView();
+          logInView();
   
-
-const monitorAuthState = async() => {
-    onAuthStateChanged(auth, user => {
-      if(user){
-        snapShotView();
-       
-        logInView()
-
-       
-       logOutBtn.addEventListener('click', (e) => {
-         e.preventDefault()
-   
-           signOut(auth)
-               .then(() =>{
-                   console.log('the user signed out')
-               })
-               .catch((error) =>{
-                   console.log(error.message)
-               })
-       })
+          // Assuming you have a modal element with the id 'myModal'
+          const signUpModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+          signUpModal.hide();
+          
+          logOutBtn.addEventListener('click', (e) => {
+            e.preventDefault()
       
-      } else{
-        console.log("Try again")
-        logOutView()
-      }
-    
-    
-    
-    })
+              signOut(auth)
+                  .then(() =>{
+                      console.log('the user signed out')
+                  })
+                  .catch((error) =>{
+                      console.log(error.message)
+                  })
+          })
+         
 
-  }
-   monitorAuthState()
+          resolve(); // Resolve the promise when the user is authenticated
+        } else {
+          console.log('Try again');
+          logOutView();
+          resolve(); // Resolve the promise when there is no authenticated user
+        }
+      });
+  
+      // Assuming you want to stop monitoring when the function is called again
+      return () => unsubscribe();
+    });
+  };
+  
+  // Call the function
+  monitorAuthState();
+  
+  
     //adding Docs
     const addVisitorForm = document.querySelector('.add')
     addVisitorForm.addEventListener('submit', (e) =>{
