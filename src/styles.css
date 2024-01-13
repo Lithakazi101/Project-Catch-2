@@ -16,7 +16,9 @@ form {
     margin-bottom: 20px;
     color: black; /* Set your desired color */
   }
-
+  .home img{
+    margin: 2px;
+  }
   label {
     display: block;
     margin-bottom: 5px;
