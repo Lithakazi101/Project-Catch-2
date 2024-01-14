@@ -89,6 +89,11 @@ const firebaseConfig = {
           const signUpModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
           signUpModal.hide();
           
+          const modalBackdrop = document.querySelector('.modal-backdrop');
+                  if (modalBackdrop) {
+                    modalBackdrop.parentNode.removeChild(modalBackdrop);
+                  }
+
           logOutBtn.addEventListener('click', (e) => {
             e.preventDefault()
       
